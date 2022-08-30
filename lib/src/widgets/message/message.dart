@@ -221,7 +221,7 @@ class Message extends StatelessWidget {
               right: kIsWeb ? 0 : query.padding.right,
             ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
             ? null
