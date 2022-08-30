@@ -19,6 +19,7 @@ import 'chat_list.dart';
 import 'image_gallery.dart';
 import 'input/input.dart';
 import 'message/message.dart';
+import 'message/system_message.dart';
 import 'message/text_message.dart';
 import 'state/inherited_chat_theme.dart';
 import 'state/inherited_l10n.dart';
@@ -79,6 +80,7 @@ class Chat extends StatefulWidget {
     this.scrollToUnreadOptions = const ScrollToUnreadOptions(),
     this.showUserAvatars = false,
     this.showUserNames = false,
+    this.systemMessageBuilder,
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
@@ -256,6 +258,9 @@ class Chat extends StatefulWidget {
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
   final bool showUserNames;
+
+  /// Builds a system message outside of any bubble.
+  final Widget Function(types.SystemMessage)? systemMessageBuilder;
 
   /// See [Message.textMessageBuilder].
   final Widget Function(
@@ -469,18 +474,15 @@ class ChatState extends State<Chat> {
     int? index,
   ) {
     if (object is DateHeader) {
-      if (widget.dateHeaderBuilder != null) {
-        return widget.dateHeaderBuilder!(object);
-      } else {
-        return Container(
-          alignment: Alignment.center,
-          margin: widget.theme.dateDividerMargin,
-          child: Text(
-            object.text,
-            style: widget.theme.dateDividerTextStyle,
-          ),
-        );
-      }
+      return widget.dateHeaderBuilder?.call(object) ??
+          Container(
+            alignment: Alignment.center,
+            margin: widget.theme.dateDividerMargin,
+            child: Text(
+              object.text,
+              style: widget.theme.dateDividerTextStyle,
+            ),
+          );
     } else if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
@@ -497,16 +499,17 @@ class ChatState extends State<Chat> {
     } else {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
-      final messageWidth =
-          widget.showUserAvatars && message.author.id != widget.user.id
-              ? min(constraints.maxWidth * 0.72, 440).floor()
-              : min(constraints.maxWidth * 0.78, 440).floor();
+      final Widget messageWidget;
+      if (message is types.SystemMessage) {
+        messageWidget = widget.systemMessageBuilder?.call(message) ??
+            SystemMessage(message: message.text);
+      } else {
+        final messageWidth =
+            widget.showUserAvatars && message.author.id != widget.user.id
+                ? min(constraints.maxWidth * 0.72, 440).floor()
+                : min(constraints.maxWidth * 0.78, 440).floor();
 
-      return AutoScrollTag(
-        controller: _scrollController,
-        index: index ?? -1,
-        key: Key('scroll-${message.id}'),
-        child: Message(
+        messageWidget = Message(
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
           bubbleRtlAlignment: widget.bubbleRtlAlignment,
@@ -544,7 +547,14 @@ class ChatState extends State<Chat> {
           textMessageOptions: widget.textMessageOptions,
           usePreviewData: widget.usePreviewData,
           userAgent: widget.userAgent,
-        ),
+        );
+      }
+
+      return AutoScrollTag(
+        controller: _scrollController,
+        index: index ?? -1,
+        key: Key('scroll-${message.id}'),
+        child: messageWidget,
       );
     }
   }
