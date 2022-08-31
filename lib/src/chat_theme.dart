@@ -6,6 +6,9 @@ import 'widgets/unread_header.dart';
 // For internal usage only. Use values from theme itself.
 
 /// See [ChatTheme.userAvatarNameColors]
+const userAvatarNameColors = [
+  Color(0xff8e8e93),
+];
 const colors = [
   Color(0xffff6767),
   Color(0xff66e0da),
@@ -426,7 +429,7 @@ class DefaultChatTheme extends ChatTheme {
       ),
     ),
     super.userAvatarImageBackgroundColor = Colors.transparent,
-    super.userAvatarNameColors = colors,
+    super.userAvatarNameColors = userAvatarNameColors,
     super.userAvatarTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 12,
@@ -582,7 +585,7 @@ class DarkChatTheme extends ChatTheme {
       ),
     ),
     super.userAvatarImageBackgroundColor = Colors.transparent,
-    super.userAvatarNameColors = colors,
+    super.userAvatarNameColors = userAvatarNameColors,
     super.userAvatarTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 12,
