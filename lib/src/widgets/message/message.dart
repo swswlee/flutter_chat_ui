@@ -24,6 +24,7 @@ class Message extends StatelessWidget {
     super.key,
     this.avatarBuilder,
     this.bubbleBuilder,
+    this.blockedMessageBuilder,
     this.bubbleRtlAlignment,
     this.customMessageBuilder,
     this.customStatusBuilder,
@@ -68,6 +69,8 @@ class Message extends StatelessWidget {
     required types.Message message,
     required bool nextMessageInGroup,
   })? bubbleBuilder;
+
+  final Widget Function({required types.Message message, required Widget Function() messageBuilder})? blockedMessageBuilder;
 
   /// Determine the alignment of the bubble for RTL languages. Has no effect
   /// for the LTR languages.
@@ -288,12 +291,12 @@ class Message extends StatelessWidget {
   ) =>
       bubbleBuilder != null
           ? bubbleBuilder!(
-              _messageBuilder(),
+              _messageBuilderForBlocked(),
               message: message,
               nextMessageInGroup: roundBorder,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder()
+              ? _messageBuilderForBlocked()
               : Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
@@ -301,9 +304,11 @@ class Message extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: borderRadius,
-                    child: _messageBuilder(),
+                    child: _messageBuilderForBlocked(),
                   ),
                 );
+
+  Widget _messageBuilderForBlocked() => blockedMessageBuilder != null ? blockedMessageBuilder!.call(message: message, messageBuilder: _messageBuilder) : _messageBuilder();
 
   Widget _messageBuilder() {
     switch (message.type) {
