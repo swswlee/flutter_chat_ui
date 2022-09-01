@@ -41,7 +41,7 @@ const neutral7 = Color(0xffffffff);
 const neutral7WithOpacity = Color(0x80ffffff);
 
 /// Primary.
-const primary = Color(0xff6f61e8);
+const primary = Color(0xff1c69ff);
 
 /// Secondary.
 const secondary = Color(0xfff5f5f7);
@@ -334,12 +334,10 @@ class DefaultChatTheme extends ChatTheme {
     ),
     super.inputTextStyle = const TextStyle(
       fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.5,
     ),
     super.messageBorderRadius = 20,
-    super.messageInsetsHorizontal = 20,
-    super.messageInsetsVertical = 16,
+    super.messageInsetsHorizontal = 10,
+    super.messageInsetsVertical = 10,
     super.primaryColor = primary,
     super.receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     super.receivedMessageBodyBoldTextStyle,
@@ -348,27 +346,19 @@ class DefaultChatTheme extends ChatTheme {
     super.receivedMessageBodyTextStyle = const TextStyle(
       color: neutral0,
       fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.5,
     ),
     super.receivedMessageCaptionTextStyle = const TextStyle(
       color: neutral2,
       fontSize: 12,
-      fontWeight: FontWeight.w500,
-      height: 1.333,
     ),
     super.receivedMessageDocumentIconColor = primary,
     super.receivedMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral0,
       fontSize: 14,
-      fontWeight: FontWeight.w400,
-      height: 1.428,
     ),
     super.receivedMessageLinkTitleTextStyle = const TextStyle(
       color: neutral0,
       fontSize: 16,
-      fontWeight: FontWeight.w800,
-      height: 1.375,
     ),
     super.secondaryColor = secondary,
     super.seenIcon,
@@ -382,27 +372,19 @@ class DefaultChatTheme extends ChatTheme {
     super.sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.5,
     ),
     super.sentMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
       fontSize: 12,
-      fontWeight: FontWeight.w500,
-      height: 1.333,
     ),
     super.sentMessageDocumentIconColor = neutral7,
     super.sentMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 14,
-      fontWeight: FontWeight.w400,
-      height: 1.428,
     ),
     super.sentMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 16,
-      fontWeight: FontWeight.w800,
-      height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
     super.systemMessageTheme = const SystemMessageTheme(
@@ -415,8 +397,6 @@ class DefaultChatTheme extends ChatTheme {
       textStyle: TextStyle(
         color: neutral2,
         fontSize: 12,
-        fontWeight: FontWeight.w800,
-        height: 1.333,
       ),
     ),
     super.unreadHeaderTheme = const UnreadHeaderTheme(
@@ -424,8 +404,6 @@ class DefaultChatTheme extends ChatTheme {
       textStyle: TextStyle(
         color: neutral2,
         fontSize: 12,
-        fontWeight: FontWeight.w500,
-        height: 1.333,
       ),
     ),
     super.userAvatarImageBackgroundColor = Colors.transparent,
@@ -433,13 +411,9 @@ class DefaultChatTheme extends ChatTheme {
     super.userAvatarTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 12,
-      fontWeight: FontWeight.w800,
-      height: 1.333,
     ),
     super.userNameTextStyle = const TextStyle(
       fontSize: 12,
-      fontWeight: FontWeight.w800,
-      height: 1.333,
     ),
   });
 }
@@ -490,8 +464,6 @@ class DarkChatTheme extends ChatTheme {
     ),
     super.inputTextStyle = const TextStyle(
       fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.5,
     ),
     super.messageBorderRadius = 20,
     super.messageInsetsHorizontal = 20,
@@ -504,27 +476,19 @@ class DarkChatTheme extends ChatTheme {
     super.receivedMessageBodyTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.5,
     ),
     super.receivedMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
       fontSize: 12,
-      fontWeight: FontWeight.w500,
-      height: 1.333,
     ),
     super.receivedMessageDocumentIconColor = primary,
     super.receivedMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 14,
-      fontWeight: FontWeight.w400,
-      height: 1.428,
     ),
     super.receivedMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 16,
-      fontWeight: FontWeight.w800,
-      height: 1.375,
     ),
     super.secondaryColor = secondaryDark,
     super.seenIcon,
@@ -538,27 +502,19 @@ class DarkChatTheme extends ChatTheme {
     super.sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.5,
     ),
     super.sentMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
       fontSize: 12,
-      fontWeight: FontWeight.w500,
-      height: 1.333,
     ),
     super.sentMessageDocumentIconColor = neutral7,
     super.sentMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 14,
-      fontWeight: FontWeight.w400,
-      height: 1.428,
     ),
     super.sentMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 16,
-      fontWeight: FontWeight.w800,
-      height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
     super.systemMessageTheme = const SystemMessageTheme(
@@ -571,8 +527,6 @@ class DarkChatTheme extends ChatTheme {
       textStyle: TextStyle(
         color: neutral7,
         fontSize: 12,
-        fontWeight: FontWeight.w800,
-        height: 1.333,
       ),
     ),
     super.unreadHeaderTheme = const UnreadHeaderTheme(
@@ -580,8 +534,6 @@ class DarkChatTheme extends ChatTheme {
       textStyle: TextStyle(
         color: neutral7WithOpacity,
         fontSize: 12,
-        fontWeight: FontWeight.w500,
-        height: 1.333,
       ),
     ),
     super.userAvatarImageBackgroundColor = Colors.transparent,
@@ -589,13 +541,9 @@ class DarkChatTheme extends ChatTheme {
     super.userAvatarTextStyle = const TextStyle(
       color: neutral7,
       fontSize: 12,
-      fontWeight: FontWeight.w800,
-      height: 1.333,
     ),
     super.userNameTextStyle = const TextStyle(
       fontSize: 12,
-      fontWeight: FontWeight.w800,
-      height: 1.333,
     ),
   });
 }
