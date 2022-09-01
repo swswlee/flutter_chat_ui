@@ -104,8 +104,6 @@ List<Object> calculateChatMessages(
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
 
-  var shouldShowName = false;
-
   for (var i = messages.length - 1; i >= 0; i--) {
     final isFirst = i == messages.length - 1;
     final isLast = i == 0;
@@ -220,6 +218,6 @@ List<Object> calculateChatMessages(
 
   return [
     chatMessages,
-    gallery
+    gallery,
   ];
 }
