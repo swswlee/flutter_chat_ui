@@ -230,56 +230,66 @@ class Message extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: messageWidth.toDouble(),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (showName) nameBuilder?.call(message.author.id) ?? UserName(author: message.author),
-                    GestureDetector(
-                      onDoubleTap: () => onMessageDoubleTap?.call(context, message),
-                      onLongPress: () => onMessageLongPress?.call(context, message),
-                      onTap: () => onMessageTap?.call(context, message),
-                      child: onMessageVisibilityChanged != null
-                          ? VisibilityDetector(
-                              key: Key(message.id),
-                              onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
-                                message,
-                                visibilityInfo.visibleFraction > 0.1,
-                              ),
-                              child: _bubbleBuilder(
-                                context,
-                                borderRadius.resolve(Directionality.of(context)),
-                                currentUserIsAuthor,
-                                enlargeEmojis,
-                              ),
-                            )
-                          : _bubbleBuilder(
-                              context,
-                              borderRadius.resolve(Directionality.of(context)),
-                              currentUserIsAuthor,
-                              enlargeEmojis,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (showName) nameBuilder?.call(message.author.id) ?? UserName(author: message.author),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: messageWidth.toDouble(),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onDoubleTap: () => onMessageDoubleTap?.call(context, message),
+                              onLongPress: () => onMessageLongPress?.call(context, message),
+                              onTap: () => onMessageTap?.call(context, message),
+                              child: onMessageVisibilityChanged != null
+                                  ? VisibilityDetector(
+                                      key: Key(message.id),
+                                      onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
+                                        message,
+                                        visibilityInfo.visibleFraction > 0.1,
+                                      ),
+                                      child: _bubbleBuilder(
+                                        context,
+                                        borderRadius.resolve(Directionality.of(context)),
+                                        currentUserIsAuthor,
+                                        enlargeEmojis,
+                                      ),
+                                    )
+                                  : _bubbleBuilder(
+                                      context,
+                                      borderRadius.resolve(Directionality.of(context)),
+                                      currentUserIsAuthor,
+                                      enlargeEmojis,
+                                    ),
                             ),
-                    ),
-                  ],
-                ),
+                          ],
+                        ),
+                      ),
+                      if (currentUserIsAuthor)
+                        Padding(
+                          padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+                          child: showStatus
+                              ? GestureDetector(
+                                  onLongPress: () => onMessageStatusLongPress?.call(context, message),
+                                  onTap: () => onMessageStatusTap?.call(context, message),
+                                  child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
+                                )
+                              : null,
+                        ),
+                      if (!currentUserIsAuthor && showMessageTime) _messageTimeBuider(),
+                    ],
+                  ),
+                ],
               ),
-              if (currentUserIsAuthor)
-                Padding(
-                  padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-                  child: showStatus
-                      ? GestureDetector(
-                          onLongPress: () => onMessageStatusLongPress?.call(context, message),
-                          onTap: () => onMessageStatusTap?.call(context, message),
-                          child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
-                        )
-                      : null,
-                ),
             ],
           ),
-          if (!currentUserIsAuthor && showMessageTime) _messageTimeBuider(),
         ],
       ),
     );
