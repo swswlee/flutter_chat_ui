@@ -217,58 +217,65 @@ class Message extends StatelessWidget {
               right: kIsWeb ? 0 : query.padding.right,
             ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left ? null : TextDirection.ltr,
         children: [
-          if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: messageWidth.toDouble(),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (showName) nameBuilder?.call(message.author.id) ?? UserName(author: message.author),
-                GestureDetector(
-                  onDoubleTap: () => onMessageDoubleTap?.call(context, message),
-                  onLongPress: () => onMessageLongPress?.call(context, message),
-                  onTap: () => onMessageTap?.call(context, message),
-                  child: onMessageVisibilityChanged != null
-                      ? VisibilityDetector(
-                          key: Key(message.id),
-                          onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
-                            message,
-                            visibilityInfo.visibleFraction > 0.1,
-                          ),
-                          child: _bubbleBuilder(
-                            context,
-                            borderRadius.resolve(Directionality.of(context)),
-                            currentUserIsAuthor,
-                            enlargeEmojis,
-                          ),
-                        )
-                      : _bubbleBuilder(
-                          context,
-                          borderRadius.resolve(Directionality.of(context)),
-                          currentUserIsAuthor,
-                          enlargeEmojis,
-                        ),
+          if (currentUserIsAuthor) _messageTimeBuider(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: messageWidth.toDouble(),
                 ),
-              ],
-            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (showName) nameBuilder?.call(message.author.id) ?? UserName(author: message.author),
+                    GestureDetector(
+                      onDoubleTap: () => onMessageDoubleTap?.call(context, message),
+                      onLongPress: () => onMessageLongPress?.call(context, message),
+                      onTap: () => onMessageTap?.call(context, message),
+                      child: onMessageVisibilityChanged != null
+                          ? VisibilityDetector(
+                              key: Key(message.id),
+                              onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
+                                message,
+                                visibilityInfo.visibleFraction > 0.1,
+                              ),
+                              child: _bubbleBuilder(
+                                context,
+                                borderRadius.resolve(Directionality.of(context)),
+                                currentUserIsAuthor,
+                                enlargeEmojis,
+                              ),
+                            )
+                          : _bubbleBuilder(
+                              context,
+                              borderRadius.resolve(Directionality.of(context)),
+                              currentUserIsAuthor,
+                              enlargeEmojis,
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+              if (currentUserIsAuthor)
+                Padding(
+                  padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+                  child: showStatus
+                      ? GestureDetector(
+                          onLongPress: () => onMessageStatusLongPress?.call(context, message),
+                          onTap: () => onMessageStatusTap?.call(context, message),
+                          child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
+                        )
+                      : null,
+                ),
+            ],
           ),
-          if (currentUserIsAuthor)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () => onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
-                    )
-                  : null,
-            ),
+          if (!currentUserIsAuthor) _messageTimeBuider(),
         ],
       ),
     );
@@ -309,6 +316,16 @@ class Message extends StatelessWidget {
                 );
 
   Widget _messageBuilderForBlocked() => blockedMessageBuilder != null ? blockedMessageBuilder!.call(message: message, messageBuilder: _messageBuilder) : _messageBuilder();
+
+  Widget _messageTimeBuider() => Padding(
+        padding: const EdgeInsets.all(4),
+        child: Text(
+          getChatTime(message),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 10, color: Color(0xff9e9cab)),
+        ),
+      );
 
   Widget _messageBuilder() {
     switch (message.type) {

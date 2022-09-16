@@ -58,13 +58,14 @@ String getVerboseDateTimeRepresentation(
   DateFormat? timeFormat,
 }) {
   final formattedDate = dateFormat != null ? dateFormat.format(dateTime) : DateFormat.MMMd(dateLocale).format(dateTime);
-  final formattedTime = timeFormat != null ? timeFormat.format(dateTime) : DateFormat.Hm(dateLocale).format(dateTime);
-  final localDateTime = dateTime.toLocal();
-  final now = DateTime.now();
+  // final formattedTime = timeFormat != null ? timeFormat.format(dateTime) : DateFormat.Hm(dateLocale).format(dateTime);
+  // final localDateTime = dateTime.toLocal();
+  // final now = DateTime.now();
+  final formattedTime = timeFormat != null ? timeFormat.format(dateTime) : DateFormat('a h:mm', dateLocale).format(dateTime);
 
-  if (localDateTime.day == now.day && localDateTime.month == now.month && localDateTime.year == now.year) {
-    return formattedTime;
-  }
+  // if (localDateTime.day == now.day && localDateTime.month == now.month && localDateTime.year == now.year) {
+  //   return formattedTime;
+  // }
 
   return '$formattedDate, $formattedTime';
 }
@@ -132,9 +133,9 @@ List<Object> calculateChatMessages(
     }
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {
-      nextMessageDateThreshold = nextMessage!.createdAt! - message.createdAt! >= dateHeaderThreshold;
+      // nextMessageDateThreshold = nextMessage!.createdAt! - message.createdAt! >= dateHeaderThreshold;
 
-      nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day != DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
+      nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day != DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor && message.id != lastReadMessageId && nextMessage.createdAt! - message.createdAt! <= groupMessagesThreshold;
     }
@@ -220,4 +221,12 @@ List<Object> calculateChatMessages(
     chatMessages,
     gallery,
   ];
+}
+
+String getChatTime(types.Message message) {
+  if (message.createdAt != null) {
+    final created = DateTime.fromMillisecondsSinceEpoch(message.createdAt!);
+    return DateFormat('a h:mm').format(created);
+  }
+  return '';
 }
