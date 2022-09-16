@@ -530,6 +530,7 @@ class ChatState extends State<Chat> {
           showAvatar: map['showAvatar'] == true,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
+          showMessageTime: map['showMessageTime'] == true,
           showUserAvatars: widget.showUserAvatars,
           textMessageBuilder: widget.textMessageBuilder,
           textMessageOptions: widget.textMessageOptions,

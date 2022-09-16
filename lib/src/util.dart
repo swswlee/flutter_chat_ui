@@ -116,6 +116,7 @@ List<Object> calculateChatMessages(
     final notMyMessage = message.author.id != user.id;
 
     var nextMessageDateThreshold = false;
+    var nextMessageDifferentMinute = false;
     var nextMessageDifferentDay = false;
     var nextMessageInGroup = false;
     var showAvatar = false;
@@ -123,10 +124,9 @@ List<Object> calculateChatMessages(
 
     if (showUserNames) {
       final previousMessage = isFirst ? null : messages[i + 1];
-
       final isFirstInGroup = notMyMessage && ((message.author.id != previousMessage?.author.id) || (messageHasCreatedAt && previousMessage?.createdAt != null && message.createdAt! - previousMessage!.createdAt! > groupMessagesThreshold));
 
-      if (isFirstInGroup) {
+      if (isFirstInGroup || (previousMessage != null && (previousMessage.createdAt! / 60000).ceil() != (message.createdAt! / 60000).ceil())) {
         showAvatar = true;
         showName = true;
       }
@@ -134,8 +134,9 @@ List<Object> calculateChatMessages(
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {
       // nextMessageDateThreshold = nextMessage!.createdAt! - message.createdAt! >= dateHeaderThreshold;
+      nextMessageDifferentMinute = (nextMessage!.createdAt! / 60000).ceil() != (message.createdAt! / 60000).ceil();
 
-      nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day != DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!).day;
+      nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day != DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor && message.id != lastReadMessageId && nextMessage.createdAt! - message.createdAt! <= groupMessagesThreshold;
     }
@@ -166,6 +167,7 @@ List<Object> calculateChatMessages(
       'showAvatar': notMyMessage && showAvatar,
       'showName': notMyMessage && showUserNames && showName,
       'showStatus': message.showStatus ?? true,
+      'showMessageTime': !nextMessageInGroup || nextMessageDifferentMinute,
     });
 
     if (!nextMessageInGroup && message.type != types.MessageType.system) {
@@ -178,7 +180,7 @@ List<Object> calculateChatMessages(
       );
     }
 
-    if (nextMessageDifferentDay || nextMessageDateThreshold) {
+    if (nextMessageDifferentDay /* || nextMessageDateThreshold */) {
       chatMessages.insert(
         0,
         DateHeader(

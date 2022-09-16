@@ -48,6 +48,7 @@ class Message extends StatelessWidget {
     required this.showAvatar,
     required this.showName,
     required this.showStatus,
+    required this.showMessageTime,
     required this.showUserAvatars,
     this.textMessageBuilder,
     required this.textMessageOptions,
@@ -144,6 +145,9 @@ class Message extends StatelessWidget {
   /// Show message's status.
   final bool showStatus;
 
+  /// Show message's created time.
+  final bool showMessageTime;
+
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
 
@@ -221,7 +225,7 @@ class Message extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left ? null : TextDirection.ltr,
         children: [
-          if (currentUserIsAuthor) _messageTimeBuider(),
+          if (currentUserIsAuthor && showMessageTime) _messageTimeBuider(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -275,7 +279,7 @@ class Message extends StatelessWidget {
                 ),
             ],
           ),
-          if (!currentUserIsAuthor) _messageTimeBuider(),
+          if (!currentUserIsAuthor && showMessageTime) _messageTimeBuider(),
         ],
       ),
     );
