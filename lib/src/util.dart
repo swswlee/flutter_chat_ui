@@ -126,7 +126,7 @@ List<Object> calculateChatMessages(
       final previousMessage = isFirst ? null : messages[i + 1];
       final isFirstInGroup = notMyMessage && ((message.author.id != previousMessage?.author.id) || (messageHasCreatedAt && previousMessage?.createdAt != null && message.createdAt! - previousMessage!.createdAt! > groupMessagesThreshold));
 
-      if (isFirstInGroup || (previousMessage != null && (previousMessage.createdAt! / 60000).ceil() != (message.createdAt! / 60000).ceil())) {
+      if (isFirstInGroup || (previousMessage != null && (previousMessage.createdAt! / 60000).floor() != (message.createdAt! / 60000).floor())) {
         showAvatar = true;
         showName = true;
       }
@@ -134,7 +134,7 @@ List<Object> calculateChatMessages(
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {
       // nextMessageDateThreshold = nextMessage!.createdAt! - message.createdAt! >= dateHeaderThreshold;
-      nextMessageDifferentMinute = (nextMessage!.createdAt! / 60000).ceil() != (message.createdAt! / 60000).ceil();
+      nextMessageDifferentMinute = (nextMessage!.createdAt! / 60000).floor() != (message.createdAt! / 60000).floor();
 
       nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day != DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
