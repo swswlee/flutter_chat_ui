@@ -135,16 +135,7 @@ class TextMessage extends StatelessWidget {
       children: [
         if (showName) nameBuilder?.call(message.author.id) ?? UserName(author: message.author),
         if (enlargeEmojis)
-          if (isTextMessageTextSelectable)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SelectableText(message.text, style: emojiTextStyle),
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(message.text, style: emojiTextStyle),
-            )
+          if (isTextMessageTextSelectable) SelectableText(message.text, style: emojiTextStyle) else Text(message.text, style: emojiTextStyle)
         else
           ParsedText(
             parse: [

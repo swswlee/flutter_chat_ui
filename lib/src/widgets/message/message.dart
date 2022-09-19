@@ -317,7 +317,10 @@ class Message extends StatelessWidget {
               nextMessageInGroup: roundBorder,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilderForBlocked()
+              ? Container(
+                  color: Colors.transparent,
+                  child: _messageBuilderForBlocked(),
+                )
               : Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
