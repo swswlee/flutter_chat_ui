@@ -89,6 +89,7 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    this.onChangedImageViewVisible,
   });
 
   /// See [Message.avatarBuilder].
@@ -259,6 +260,8 @@ class Chat extends StatefulWidget {
 
   /// Builds a system message outside of any bubble.
   final Widget Function(types.SystemMessage)? systemMessageBuilder;
+
+  final void Function(bool isVisible)? onChangedImageViewVisible;
 
   /// See [Message.textMessageBuilder].
   final Widget Function(
@@ -550,6 +553,7 @@ class ChatState extends State<Chat> {
 
   void _onCloseGalleryPressed() {
     setState(() {
+      widget.onChangedImageViewVisible?.call(false);
       _isImageViewVisible = false;
     });
     _galleryPageController?.dispose();
@@ -562,6 +566,7 @@ class ChatState extends State<Chat> {
     );
     _galleryPageController = PageController(initialPage: initialPage);
     setState(() {
+      widget.onChangedImageViewVisible?.call(true);
       _isImageViewVisible = true;
     });
   }
